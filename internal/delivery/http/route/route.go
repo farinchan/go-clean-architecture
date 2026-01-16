@@ -1,8 +1,8 @@
 package route
 
 import (
-	"kopeta-backend/internal/delivery/http/handler"
-	"kopeta-backend/internal/delivery/http/middleware"
+	"go-clean-architecture/internal/delivery/http/handler"
+	"go-clean-architecture/internal/delivery/http/middleware"
 
 	"github.com/gin-gonic/gin"
 )

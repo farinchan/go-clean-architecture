@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"kopeta-backend/internal/domain"
+	"go-clean-architecture/internal/domain"
 
 	"gorm.io/gorm"
 )

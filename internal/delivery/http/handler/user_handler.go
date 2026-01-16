@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"kopeta-backend/internal/dto"
-	"kopeta-backend/internal/usecase"
-	"kopeta-backend/pkg/response"
-	"kopeta-backend/pkg/validator"
+	"go-clean-architecture/internal/dto"
+	"go-clean-architecture/internal/usecase"
+	"go-clean-architecture/pkg/response"
+	"go-clean-architecture/pkg/validator"
 
 	"github.com/gin-gonic/gin"
 )

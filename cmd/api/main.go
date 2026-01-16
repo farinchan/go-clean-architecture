@@ -1,14 +1,14 @@
 package main
 
 import (
-	"kopeta-backend/config"
-	"kopeta-backend/infrastructure/database"
-	"kopeta-backend/internal/delivery/http/handler"
-	"kopeta-backend/internal/delivery/http/route"
-	"kopeta-backend/internal/repository"
-	"kopeta-backend/internal/usecase"
-	"kopeta-backend/pkg/logger"
-	"kopeta-backend/pkg/validator"
+	"go-clean-architecture/config"
+	"go-clean-architecture/infrastructure/database"
+	"go-clean-architecture/internal/delivery/http/handler"
+	"go-clean-architecture/internal/delivery/http/route"
+	"go-clean-architecture/internal/repository"
+	"go-clean-architecture/internal/usecase"
+	"go-clean-architecture/pkg/logger"
+	"go-clean-architecture/pkg/validator"
 
 	"github.com/gin-gonic/gin"
 )

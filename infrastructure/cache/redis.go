@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"kopeta-backend/config"
-	"kopeta-backend/pkg/logger"
+	"go-clean-architecture/config"
+	"go-clean-architecture/pkg/logger"
 
 	"github.com/redis/go-redis/v9"
 )

@@ -3,7 +3,7 @@ package middleware
 import (
 	"time"
 
-	"kopeta-backend/pkg/logger"
+	"go-clean-architecture/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 )

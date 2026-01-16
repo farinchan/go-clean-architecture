@@ -1,8 +1,8 @@
 package database
 
 import (
-	"kopeta-backend/config"
-	"kopeta-backend/pkg/logger"
+	"go-clean-architecture/config"
+	"go-clean-architecture/pkg/logger"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

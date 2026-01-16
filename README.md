@@ -1,17 +1,17 @@
 # Go Clean Architecture Backend
 
-Clean Architecture Go Backend dengan Gin, GORM, PostgreSQL, dan Redis.
+A Clean Architecture Go Backend with Gin, GORM, PostgreSQL, and Redis.
 
-## Struktur Project
+## Project Structure
 
 ```
 go-clean-architecture/
 ├── cmd/                        # Entry points
 │   └── api/
 │       └── main.go
-├── config/                     # Konfigurasi aplikasi
+├── config/                     # Application configuration
 │   └── config.go
-├── infrastructure/             # Implementasi infrastructure
+├── infrastructure/             # Infrastructure implementations
 │   ├── cache/
 │   │   └── redis.go
 │   └── database/
@@ -51,18 +51,18 @@ go-clean-architecture/
 └── README.md
 ```
 
-## Teknologi
+## Tech Stack
 
 - **Gin** - HTTP Web Framework
-- **GORM** - ORM untuk database
+- **GORM** - ORM for database
 - **Golang Migrate** - Database migrations
-- **Go Playground Validator** - Validasi request
+- **Go Playground Validator** - Request validation
 - **Viper** - Configuration management
 - **Logrus** - Logging
 - **PostgreSQL** - Database
 - **Redis** - Caching
 
-## Instalasi
+## Installation
 
 ### 1. Install Dependencies
 
@@ -70,9 +70,9 @@ go-clean-architecture/
 go mod tidy
 ```
 
-### 2. Setup Database PostgreSQL
+### 2. Setup PostgreSQL Database
 
-Buat database:
+Create the database:
 ```sql
 CREATE DATABASE go_clean_architecture_db;
 ```
@@ -83,21 +83,21 @@ CREATE DATABASE go_clean_architecture_db;
 go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 ```
 
-### 4. Jalankan Migration
+### 4. Run Migrations
 
 ```bash
 migrate -path migrations -database "postgresql://postgres:postgres@localhost:5432/go_clean_architecture_db?sslmode=disable" up
 ```
 
-### 5. Konfigurasi
+### 5. Configuration
 
-Copy file `.env.example` ke `.env` dan sesuaikan:
+Copy `.env.example` to `.env` and adjust the values:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit file `.env` sesuai environment:
+Edit the `.env` file according to your environment:
 
 ```env
 # Application
@@ -120,13 +120,13 @@ REDIS_PASSWORD=
 REDIS_DB=0
 ```
 
-### 6. Jalankan Aplikasi
+### 6. Run the Application
 
 ```bash
 go run cmd/api/main.go
 ```
 
-### 7. Build Aplikasi
+### 7. Build the Application
 
 ```bash
 go build -o bin/api cmd/api/main.go
@@ -140,12 +140,12 @@ go build -o bin/api cmd/api/main.go
 
 ### Users
 - `POST /api/v1/users` - Create user
-- `GET /api/v1/users` - Get all users (dengan pagination)
+- `GET /api/v1/users` - Get all users (with pagination)
 - `GET /api/v1/users/:id` - Get user by ID
 - `PUT /api/v1/users/:id` - Update user
 - `DELETE /api/v1/users/:id` - Delete user
 
-## Contoh Request
+## Example Requests
 
 ### Create User
 ```bash
@@ -162,17 +162,17 @@ curl http://localhost:8080/api/v1/users?page=1&limit=10
 ## Clean Architecture Layers
 
 1. **Domain Layer** (`internal/domain/`)
-   - Berisi entities dan repository interfaces
-   - Tidak bergantung pada layer lain
+   - Contains entities and repository interfaces
+   - Does not depend on any other layer
 
 2. **Use Case Layer** (`internal/usecase/`)
-   - Berisi business logic
-   - Bergantung pada domain layer
+   - Contains business logic
+   - Depends on the domain layer
 
 3. **Repository Layer** (`internal/repository/`)
-   - Implementasi akses data
-   - Bergantung pada domain layer
+   - Data access implementation
+   - Depends on the domain layer
 
 4. **Delivery Layer** (`internal/delivery/`)
-   - HTTP handlers dan routes
-   - Bergantung pada use case layer
+   - HTTP handlers and routes
+   - Depends on the use case layer

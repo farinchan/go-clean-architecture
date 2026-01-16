@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"kopeta-backend/internal/domain"
-	"kopeta-backend/internal/dto"
+	"go-clean-architecture/internal/domain"
+	"go-clean-architecture/internal/dto"
 )
 
 type UserUseCase interface {
