@@ -1,0 +1,39 @@
+version: '3.8'
+
+# This file runs only the databases for local development
+# Use this when you want to run the Go app with Air locally
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: go-clean-postgres-local
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_clean_db
+    volumes:
+      - postgres_data_local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: go-clean-redis-local
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_local:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_local:
+  redis_data_local:

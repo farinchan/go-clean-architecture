@@ -1,0 +1,21 @@
+basePath: /
+definitions: {}
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+  description: A RESTful API with Go Clean Architecture
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Go Clean Architecture API
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
