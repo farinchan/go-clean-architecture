@@ -8,8 +8,7 @@ BINARY_NAME=main.exe
 BINARY_PATH=./bin/$(BINARY_NAME)
 
 # Docker
-DOCKER_COMPOSE_DEV=docker-compose.dev.yml
-DOCKER_COMPOSE_PROD=docker-compose.yml
+DOCKER_COMPOSE=docker-compose.yml
 
 # Colors
 GREEN=
@@ -49,10 +48,9 @@ help:
 	@echo '  make swagger-fmt      - Format Swagger comments'
 	@echo ''
 	@echo 'Docker:'
-	@echo '  make docker-dev       - Start development containers'
-	@echo '  make docker-dev-down  - Stop development containers'
-	@echo '  make docker-prod      - Start production containers'
-	@echo '  make docker-prod-down - Stop production containers'
+	@echo '  make docker-up        - Start containers'
+	@echo '  make docker-down      - Stop containers'
+
 	@echo '  make docker-build     - Build Docker image'
 	@echo '  make docker-logs      - View container logs'
 	@echo ''
@@ -187,31 +185,22 @@ swagger-fmt:
 	@echo "Formatting Swagger comments..."
 	@swag fmt
 
-## docker-dev: Start development containers
-docker-dev:
-	@echo "Starting development containers..."
-	@docker-compose -f $(DOCKER_COMPOSE_DEV) up -d
-	@echo "Development containers started"
-	@echo "API: http://localhost:8080"
-	@echo "Swagger: http://localhost:8080/swagger/index.html"
-	@echo "pgAdmin: http://localhost:5050"
-	@echo "Redis Commander: http://localhost:8081"
+## docker-up: Start containers
+docker-up:
+	@echo "Starting containers..."
+	@docker-compose -f $(DOCKER_COMPOSE) up -d
+	@echo "Containers started"
 
-## docker-dev-down: Stop development containers
-docker-dev-down:
-	@echo "Stopping development containers..."
-	@docker-compose -f $(DOCKER_COMPOSE_DEV) down
+## docker-down: Stop containers
+docker-down:
+	@echo "Stopping containers..."
+	@docker-compose -f $(DOCKER_COMPOSE) down
 
-## docker-prod: Start production containers
-docker-prod:
-	@echo "Starting production containers..."
-	@docker-compose -f $(DOCKER_COMPOSE_PROD) up -d
-	@echo "Production containers started"
+## docker-prod: Alias for docker-up
+docker-prod: docker-up
 
-## docker-prod-down: Stop production containers
-docker-prod-down:
-	@echo "Stopping production containers..."
-	@docker-compose -f $(DOCKER_COMPOSE_PROD) down
+## docker-prod-down: Alias for docker-down
+docker-prod-down: docker-down
 
 ## docker-build: Build Docker image
 docker-build:
@@ -221,33 +210,10 @@ docker-build:
 
 ## docker-logs: View container logs
 docker-logs:
-	@docker-compose -f $(DOCKER_COMPOSE_DEV) logs -f
+	@docker-compose -f $(DOCKER_COMPOSE) logs -f
 
 ## docker-clean: Remove all containers and volumes
 docker-clean:
 	@echo "Removing all containers and volumes..."
-	@docker-compose -f $(DOCKER_COMPOSE_DEV) down -v --remove-orphans
-	@docker-compose -f $(DOCKER_COMPOSE_PROD) down -v --remove-orphans
+	@docker-compose -f $(DOCKER_COMPOSE) down -v --remove-orphans
 	@echo "Cleanup complete"
-
-## local-db: Start only database containers for local development
-local-db:
-	@echo "Starting database containers..."
-	@docker-compose -f docker-compose.local.yml up -d
-	@echo "Database containers started"
-	@echo "PostgreSQL: localhost:5432"
-	@echo "Redis: localhost:6379"
-	@echo ""
-	@echo "Now run 'make dev' to start the application with Air"
-
-## local-db-down: Stop database containers
-local-db-down:
-	@echo "Stopping database containers..."
-	@docker-compose -f docker-compose.local.yml down
-
-## local: Start databases and run app with Air (full local development)
-local: local-db
-	@echo "Waiting for databases to be ready..."
-	@timeout /t 5 /nobreak > nul 2>&1 || sleep 5
-	@echo "Starting application with Air..."
-	@air -c .air.toml

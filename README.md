@@ -11,7 +11,7 @@ A production-ready Go project template implementing Clean Architecture with esse
 - **Redis** - Caching and session management
 - **Swagger/OpenAPI** - API documentation with swaggo
 - **Database Migrations** - Version control for database schema
-- **Docker Support** - Development and production containers
+- **Docker Support** - Containerized setup for app, PostgreSQL, and Redis
 - **Hot Reload** - Air for fast development
 - **Structured Logging** - Logrus for logging
 - **Configuration** - Viper for environment management
@@ -51,10 +51,10 @@ go-clean-architecture/
 ├── .air.toml                   # Air hot reload config
 ├── .env.example                # Environment template
 ├── .gitignore
-├── docker-compose.yml          # Production Docker setup
-├── docker-compose.dev.yml      # Development Docker setup
-├── Dockerfile                  # Production Dockerfile
-├── Dockerfile.dev              # Development Dockerfile
+├── docker-compose.yml          # Docker Compose setup
+
+├── Dockerfile                  # Application Dockerfile
+
 ├── go.mod
 ├── Makefile                    # Development commands
 └── README.md
@@ -99,8 +99,8 @@ This installs:
 ### 3. Run with Docker (Recommended)
 
 ```bash
-# Start development environment
-make docker-dev
+# Start containers
+make docker-up
 
 # View logs
 make docker-logs
@@ -109,8 +109,8 @@ make docker-logs
 Access:
 - API: http://localhost:8080
 - Swagger: http://localhost:8080/swagger/index.html
-- pgAdmin: http://localhost:5050 (admin@admin.com / admin)
-- Redis Commander: http://localhost:8081
+
+
 
 ### 4. Run Locally
 
@@ -161,9 +161,10 @@ make dev
 ### Docker
 | Command | Description |
 |---------|-------------|
-| `make docker-dev` | Start dev containers |
-| `make docker-dev-down` | Stop dev containers |
-| `make docker-prod` | Start prod containers |
+| `make docker-up` | Start containers |
+| `make docker-down` | Stop containers |
+| `make docker-logs` | View container logs |
+| `make docker-clean` | Remove containers and volumes |
 | `make docker-build` | Build Docker image |
 
 ### Documentation
@@ -297,13 +298,13 @@ open coverage.html
 
 ## 🚢 Deployment
 
-### Docker Production
+### Docker Deployment
 ```bash
 # Build production image
 make docker-build
 
 # Start production containers
-make docker-prod
+make docker-up
 ```
 
 ### Manual Deployment
