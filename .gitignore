@@ -51,3 +51,7 @@ tmp/
 # Coverage
 coverage.out
 coverage.html
+
+# Uploads
+uploads/*
+!uploads/profile/.gitkeep

@@ -45,6 +45,18 @@ func (u *userUseCase) Register(ctx context.Context, req *dto.RegisterRequest) (*
 		return nil, errors.New("email already registered")
 	}
 
+	var phonePtr *string
+	if req.Phone != "" {
+		phoneUser, err := u.userRepo.FindByPhone(ctx, req.Phone)
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, err
+		}
+		if phoneUser != nil {
+			return nil, errors.New("phone number already registered")
+		}
+		phonePtr = &req.Phone
+	}
+
 	// Hash password
 	hashedPassword, err := utils.HashPassword(req.Password)
 	if err != nil {
@@ -55,6 +67,7 @@ func (u *userUseCase) Register(ctx context.Context, req *dto.RegisterRequest) (*
 	user := &entity.User{
 		Name:     req.Name,
 		Email:    req.Email,
+		Phone:    phonePtr,
 		Password: hashedPassword,
 		Role:     "user",
 		IsActive: true,
@@ -64,15 +77,7 @@ func (u *userUseCase) Register(ctx context.Context, req *dto.RegisterRequest) (*
 		return nil, err
 	}
 
-	return &dto.UserResponse{
-		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Role:      user.Role,
-		IsActive:  user.IsActive,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
-	}, nil
+	return ToUserResponse(user), nil
 }
 
 // Login logs in a user
@@ -103,16 +108,11 @@ func (u *userUseCase) Login(ctx context.Context, req *dto.LoginRequest) (*dto.Lo
 	}
 
 	return &dto.LoginResponse{
-		Token: token,
-		User: dto.UserResponse{
-			ID:        user.ID,
-			Name:      user.Name,
-			Email:     user.Email,
-			Role:      user.Role,
-			IsActive:  user.IsActive,
-			CreatedAt: user.CreatedAt,
-			UpdatedAt: user.UpdatedAt,
-		},
+		Token:             token,
+		TokenType:         "Bearer",
+		ExpiresIn:         int(u.jwtManager.GetExpiration().Seconds()),
+		TwoFactorRequired: false,
+		User:              ToUserResponse(user),
 	}, nil
 }
 
@@ -126,15 +126,7 @@ func (u *userUseCase) GetByID(ctx context.Context, id uint) (*dto.UserResponse, 
 		return nil, err
 	}
 
-	return &dto.UserResponse{
-		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Role:      user.Role,
-		IsActive:  user.IsActive,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
-	}, nil
+	return ToUserResponse(user), nil
 }
 
 // GetAll gets all users with pagination
@@ -146,15 +138,10 @@ func (u *userUseCase) GetAll(ctx context.Context, page, limit int) ([]dto.UserRe
 
 	var response []dto.UserResponse
 	for _, user := range users {
-		response = append(response, dto.UserResponse{
-			ID:        user.ID,
-			Name:      user.Name,
-			Email:     user.Email,
-			Role:      user.Role,
-			IsActive:  user.IsActive,
-			CreatedAt: user.CreatedAt,
-			UpdatedAt: user.UpdatedAt,
-		})
+		res := ToUserResponse(&user)
+		if res != nil {
+			response = append(response, *res)
+		}
 	}
 
 	return response, total, nil
@@ -174,8 +161,7 @@ func (u *userUseCase) Update(ctx context.Context, id uint, req *dto.UpdateUserRe
 	if req.Name != "" {
 		user.Name = req.Name
 	}
-	if req.Email != "" {
-		// Check if email is already taken by another user
+	if req.Email != "" && req.Email != user.Email {
 		existingUser, err := u.userRepo.FindByEmail(ctx, req.Email)
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, err
@@ -185,6 +171,16 @@ func (u *userUseCase) Update(ctx context.Context, id uint, req *dto.UpdateUserRe
 		}
 		user.Email = req.Email
 	}
+	if req.Phone != "" && (user.Phone == nil || req.Phone != *user.Phone) {
+		existingPhoneUser, err := u.userRepo.FindByPhone(ctx, req.Phone)
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, err
+		}
+		if existingPhoneUser != nil && existingPhoneUser.ID != id {
+			return nil, errors.New("phone already taken")
+		}
+		user.Phone = &req.Phone
+	}
 	if req.Password != "" {
 		hashedPassword, err := utils.HashPassword(req.Password)
 		if err != nil {
@@ -192,20 +188,15 @@ func (u *userUseCase) Update(ctx context.Context, id uint, req *dto.UpdateUserRe
 		}
 		user.Password = hashedPassword
 	}
+	if req.Is2FAEnabled != nil {
+		user.Is2FAEnabled = *req.Is2FAEnabled
+	}
 
 	if err := u.userRepo.Update(ctx, user); err != nil {
 		return nil, err
 	}
 
-	return &dto.UserResponse{
-		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Role:      user.Role,
-		IsActive:  user.IsActive,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
-	}, nil
+	return ToUserResponse(user), nil
 }
 
 // Delete deletes a user

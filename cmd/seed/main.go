@@ -27,7 +27,7 @@ func main() {
 	defer db.Close()
 
 	// Auto migrate
-	if err := db.AutoMigrate(&entity.User{}); err != nil {
+	if err := db.AutoMigrate(&entity.User{}, &entity.TwoFactorCode{}, &entity.PasswordReset{}); err != nil {
 		logger.Fatalf("Failed to auto migrate: %v", err)
 	}
 

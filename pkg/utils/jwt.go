@@ -71,3 +71,8 @@ func (j *JWTManager) RefreshToken(tokenString string) (string, error) {
 
 	return j.GenerateToken(claims.UserID, claims.Email, claims.Role)
 }
+
+// GetExpiration returns the expiration duration
+func (j *JWTManager) GetExpiration() time.Duration {
+	return j.expiration
+}

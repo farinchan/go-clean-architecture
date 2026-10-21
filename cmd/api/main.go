@@ -16,6 +16,7 @@ import (
 	"github.com/your-username/go-clean-architecture/internal/usecase"
 	"github.com/your-username/go-clean-architecture/pkg/database"
 	"github.com/your-username/go-clean-architecture/pkg/logger"
+	"github.com/your-username/go-clean-architecture/pkg/mail"
 	"github.com/your-username/go-clean-architecture/pkg/utils"
 	"github.com/your-username/go-clean-architecture/pkg/validator"
 )
@@ -74,18 +75,27 @@ func main() {
 	// Initialize JWT Manager
 	jwtManager := utils.NewJWTManager(cfg.JWT.Secret, cfg.JWT.ExpireHours)
 
+	// Initialize Mailer
+	mailer := mail.NewMailer(&cfg.SMTP)
+
 	// Initialize repositories
 	userRepo := repository.NewUserRepository(db.DB)
+	twoFactorRepo := repository.NewTwoFactorRepository(db.DB)
+	passwordResetRepo := repository.NewPasswordResetRepository(db.DB)
 
 	// Initialize use cases
+	authUseCase := usecase.NewAuthUseCase(userRepo, twoFactorRepo, passwordResetRepo, jwtManager, mailer)
+	profileUseCase := usecase.NewProfileUseCase(userRepo, mailer)
 	userUseCase := usecase.NewUserUseCase(userRepo, jwtManager)
 
 	// Initialize handlers
+	authHandler := handler.NewAuthHandler(authUseCase)
+	profileHandler := handler.NewProfileHandler(profileUseCase)
 	userHandler := handler.NewUserHandler(userUseCase)
 	healthHandler := handler.NewHealthHandler()
 
 	// Initialize router
-	r := router.NewRouter(userHandler, healthHandler, jwtManager, cfg.App.Debug)
+	r := router.NewRouter(authHandler, profileHandler, userHandler, healthHandler, jwtManager, cfg.App.Debug)
 	engine := r.SetupRoutes()
 
 	// Create HTTP server

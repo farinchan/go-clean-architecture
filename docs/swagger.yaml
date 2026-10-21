@@ -1,5 +1,246 @@
 basePath: /
-definitions: {}
+definitions:
+  github_com_your-username_go-clean-architecture_internal_dto.ChangePasswordRequest:
+    properties:
+      confirm_password:
+        example: NewSecretPassword2026!
+        type: string
+      new_password:
+        example: NewSecretPassword2026!
+        minLength: 6
+        type: string
+      old_password:
+        example: SecurePassword123
+        type: string
+    required:
+    - confirm_password
+    - new_password
+    - old_password
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.ForgotPasswordRequest:
+    properties:
+      email:
+        example: fajri@example.com
+        type: string
+    required:
+    - email
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.LoginRequest:
+    properties:
+      email:
+        example: fajri@example.com
+        type: string
+      password:
+        example: SecurePassword123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.LoginResponse:
+    properties:
+      expires_in:
+        example: 86400
+        type: integer
+      pre_auth_token:
+        example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        type: string
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      token_type:
+        example: Bearer
+        type: string
+      two_factor_required:
+        example: false
+        type: boolean
+      user:
+        $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.RefreshTokenRequest:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    required:
+    - token
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.RegisterRequest:
+    properties:
+      email:
+        example: fajri@example.com
+        type: string
+      name:
+        example: Fajri Ramadhan
+        maxLength: 100
+        minLength: 2
+        type: string
+      password:
+        example: SecurePassword123
+        minLength: 6
+        type: string
+      phone:
+        example: "+6281234567890"
+        maxLength: 20
+        minLength: 8
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.ResetPasswordRequest:
+    properties:
+      confirm_password:
+        example: MyNewSecretPassword2026
+        type: string
+      email:
+        example: fajri@example.com
+        type: string
+      password:
+        example: MyNewSecretPassword2026
+        minLength: 6
+        type: string
+      token:
+        example: "492018"
+        type: string
+    required:
+    - confirm_password
+    - email
+    - password
+    - token
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.Toggle2FARequest:
+    properties:
+      enable:
+        type: boolean
+    required:
+    - enable
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.UpdateProfileRequest:
+    properties:
+      email:
+        example: fajri.new@example.com
+        type: string
+      is_2fa_enabled:
+        type: boolean
+      name:
+        example: Fajri Ramadhan Updated
+        maxLength: 100
+        minLength: 2
+        type: string
+      phone:
+        example: "+6281298765432"
+        maxLength: 20
+        minLength: 8
+        type: string
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.UpdateUserRequest:
+    properties:
+      email:
+        example: john.updated@example.com
+        type: string
+      is_2fa_enabled:
+        type: boolean
+      name:
+        example: John Doe Updated
+        maxLength: 100
+        minLength: 2
+        type: string
+      password:
+        example: newpassword123
+        minLength: 6
+        type: string
+      phone:
+        example: "+6281298765432"
+        maxLength: 20
+        minLength: 8
+        type: string
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.UserResponse:
+    properties:
+      created_at:
+        example: "2026-10-16T10:00:00Z"
+        type: string
+      email:
+        example: fajri@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_2fa_enabled:
+        example: false
+        type: boolean
+      is_active:
+        example: true
+        type: boolean
+      name:
+        example: Fajri Ramadhan
+        type: string
+      notification_secret:
+        example: whsec_550e8400e29b41d4a716446655440000
+        type: string
+      phone:
+        example: "+6281234567890"
+        type: string
+      photo:
+        example: /uploads/profile/550e8400-e29b-41d4-a716-446655440000.jpg
+        type: string
+      role:
+        example: user
+        type: string
+      updated_at:
+        example: "2026-10-16T10:00:00Z"
+        type: string
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.Verify2FARequest:
+    properties:
+      code:
+        example: "849201"
+        maxLength: 6
+        minLength: 6
+        type: string
+      pre_auth_token:
+        example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        type: string
+    required:
+    - code
+    - pre_auth_token
+    type: object
+  github_com_your-username_go-clean-architecture_internal_dto.VerifyResetTokenRequest:
+    properties:
+      email:
+        example: fajri@example.com
+        type: string
+      token:
+        example: "492018"
+        type: string
+    required:
+    - email
+    - token
+    type: object
+  github_com_your-username_go-clean-architecture_pkg_response.Meta:
+    properties:
+      current_page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  github_com_your-username_go-clean-architecture_pkg_response.Response:
+    properties:
+      data: {}
+      error: {}
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Meta'
+      success:
+        type: boolean
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -11,7 +252,649 @@ info:
     url: https://opensource.org/licenses/MIT
   title: Go Clean Architecture API
   version: "1.0"
-paths: {}
+paths:
+  /api/v1/auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Send a 6-digit OTP code to the registered email for password reset
+      parameters:
+      - description: Forgot password request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Forgot password request
+      tags:
+      - Authentication
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password, returns JWT token or requires 2FA
+        OTP
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.LoginResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Login user
+      tags:
+      - Authentication
+  /api/v1/auth/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Generate a new fresh JWT Access Token from an existing valid token
+      parameters:
+      - description: Refresh token request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.LoginResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Refresh JWT token
+      tags:
+      - Authentication
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email, name, phone, and password
+      parameters:
+      - description: Register request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Register a new user
+      tags:
+      - Authentication
+  /api/v1/auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Reset user password using the OTP code
+      parameters:
+      - description: Reset password request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Reset password
+      tags:
+      - Authentication
+  /api/v1/auth/verify-2fa:
+    post:
+      consumes:
+      - application/json
+      description: Verify 2FA OTP code and complete login to get JWT token
+      parameters:
+      - description: Verify 2FA request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.Verify2FARequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.LoginResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Verify 2FA OTP
+      tags:
+      - Authentication
+  /api/v1/auth/verify-reset-token:
+    post:
+      consumes:
+      - application/json
+      description: Verify the validity of a password reset OTP code
+      parameters:
+      - description: Verify reset token request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.VerifyResetTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Verify reset password token
+      tags:
+      - Authentication
+  /api/v1/profile:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve the profile of the currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get current user profile
+      tags:
+      - Profile
+    put:
+      consumes:
+      - application/json
+      description: Update user profile information (name, email, phone, 2FA status)
+      parameters:
+      - description: Update profile request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Update profile
+      tags:
+      - Profile
+  /api/v1/profile/2fa:
+    patch:
+      consumes:
+      - application/json
+      description: Enable or disable Two-Factor Authentication via email
+      parameters:
+      - description: Toggle 2FA request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.Toggle2FARequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Toggle 2FA setting
+      tags:
+      - Profile
+  /api/v1/profile/change-password:
+    patch:
+      consumes:
+      - application/json
+      description: Change password for the currently authenticated user
+      parameters:
+      - description: Change password request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Change password
+      tags:
+      - Profile
+  /api/v1/profile/notification-secret/regenerate:
+    post:
+      consumes:
+      - application/json
+      description: Regenerate notification webhook secret (whsec_...)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Regenerate notification secret
+      tags:
+      - Profile
+  /api/v1/profile/photo:
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Upload and update avatar photo (PNG, JPG, JPEG, WEBP, max 5MB)
+      parameters:
+      - description: Avatar image file
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Update profile photo
+      tags:
+      - Profile
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Get all users with pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get all users
+      tags:
+      - Users
+  /api/v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: Get a specific user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get user by ID
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update a specific user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update user request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Update user
+      tags:
+      - Users
+  /api/v1/users/me:
+    get:
+      consumes:
+      - application/json
+      description: Get the currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_your-username_go-clean-architecture_internal_dto.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - Users
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Check if the service is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Health check
+      tags:
+      - Health
+  /ready:
+    get:
+      consumes:
+      - application/json
+      description: Check if the service is ready to receive traffic
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-username_go-clean-architecture_pkg_response.Response'
+      summary: Readiness check
+      tags:
+      - Health
 securityDefinitions:
   BearerAuth:
     description: Type "Bearer" followed by a space and JWT token.

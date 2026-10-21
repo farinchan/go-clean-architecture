@@ -20,62 +20,6 @@ func NewUserHandler(userUseCase usecase.UserUseCase) *UserHandler {
 	return &UserHandler{userUseCase: userUseCase}
 }
 
-// Register godoc
-// @Summary Register a new user
-// @Description Register a new user with email and password
-// @Tags Authentication
-// @Accept json
-// @Produce json
-// @Param request body dto.RegisterRequest true "Register request"
-// @Success 201 {object} response.Response{data=dto.UserResponse}
-// @Failure 400 {object} response.Response
-// @Failure 422 {object} response.Response
-// @Router /api/v1/auth/register [post]
-func (h *UserHandler) Register(c *gin.Context) {
-	var req dto.RegisterRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		errors := validator.FormatValidationErrors(err)
-		response.ValidationError(c, errors)
-		return
-	}
-
-	user, err := h.userUseCase.Register(c.Request.Context(), &req)
-	if err != nil {
-		response.BadRequest(c, err.Error(), nil)
-		return
-	}
-
-	response.Created(c, "User registered successfully", user)
-}
-
-// Login godoc
-// @Summary Login user
-// @Description Login with email and password
-// @Tags Authentication
-// @Accept json
-// @Produce json
-// @Param request body dto.LoginRequest true "Login request"
-// @Success 200 {object} response.Response{data=dto.LoginResponse}
-// @Failure 400 {object} response.Response
-// @Failure 401 {object} response.Response
-// @Router /api/v1/auth/login [post]
-func (h *UserHandler) Login(c *gin.Context) {
-	var req dto.LoginRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		errors := validator.FormatValidationErrors(err)
-		response.ValidationError(c, errors)
-		return
-	}
-
-	result, err := h.userUseCase.Login(c.Request.Context(), &req)
-	if err != nil {
-		response.Unauthorized(c, err.Error())
-		return
-	}
-
-	response.Success(c, "Login successful", result)
-}
-
 // GetUser godoc
 // @Summary Get user by ID
 // @Description Get a specific user by ID

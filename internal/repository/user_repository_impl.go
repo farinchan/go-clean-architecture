@@ -39,6 +39,15 @@ func (r *userRepository) FindByEmail(ctx context.Context, email string) (*entity
 	return &user, nil
 }
 
+// FindByPhone finds a user by phone
+func (r *userRepository) FindByPhone(ctx context.Context, phone string) (*entity.User, error) {
+	var user entity.User
+	if err := r.db.WithContext(ctx).Where("phone = ?", phone).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
 // FindAll finds all users with pagination
 func (r *userRepository) FindAll(ctx context.Context, page, limit int) ([]entity.User, int64, error) {
 	var users []entity.User

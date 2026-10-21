@@ -11,14 +11,18 @@ import (
 
 // Router holds all route configurations
 type Router struct {
-	engine        *gin.Engine
-	userHandler   *handler.UserHandler
-	healthHandler *handler.HealthHandler
-	jwtManager    *utils.JWTManager
+	engine         *gin.Engine
+	authHandler    *handler.AuthHandler
+	profileHandler *handler.ProfileHandler
+	userHandler    *handler.UserHandler
+	healthHandler  *handler.HealthHandler
+	jwtManager     *utils.JWTManager
 }
 
 // NewRouter creates a new router instance
 func NewRouter(
+	authHandler *handler.AuthHandler,
+	profileHandler *handler.ProfileHandler,
 	userHandler *handler.UserHandler,
 	healthHandler *handler.HealthHandler,
 	jwtManager *utils.JWTManager,
@@ -33,10 +37,12 @@ func NewRouter(
 	engine := gin.New()
 
 	return &Router{
-		engine:        engine,
-		userHandler:   userHandler,
-		healthHandler: healthHandler,
-		jwtManager:    jwtManager,
+		engine:         engine,
+		authHandler:    authHandler,
+		profileHandler: profileHandler,
+		userHandler:    userHandler,
+		healthHandler:  healthHandler,
+		jwtManager:     jwtManager,
 	}
 }
 
@@ -46,6 +52,9 @@ func (r *Router) SetupRoutes() *gin.Engine {
 	r.engine.Use(middleware.RecoveryMiddleware())
 	r.engine.Use(middleware.LoggerMiddleware())
 	r.engine.Use(middleware.CORSMiddleware())
+
+	// Static files for uploads (avatars / profile photos)
+	r.engine.Static("/uploads", "./uploads")
 
 	// Health check routes (no auth required)
 	r.engine.GET("/health", r.healthHandler.Health)
@@ -60,8 +69,26 @@ func (r *Router) SetupRoutes() *gin.Engine {
 		// Auth routes (public)
 		auth := v1.Group("/auth")
 		{
-			auth.POST("/register", r.userHandler.Register)
-			auth.POST("/login", r.userHandler.Login)
+			auth.POST("/register", r.authHandler.Register)
+			auth.POST("/login", r.authHandler.Login)
+			auth.POST("/verify-2fa", r.authHandler.Verify2FA)
+			auth.POST("/forgot-password", r.authHandler.ForgotPassword)
+			auth.POST("/verify-reset-token", r.authHandler.VerifyResetToken)
+			auth.POST("/reset-password", r.authHandler.ResetPassword)
+			auth.POST("/refresh-token", r.authHandler.RefreshToken)
+		}
+
+		// Profile routes (protected)
+		profile := v1.Group("/profile")
+		profile.Use(middleware.AuthMiddleware(r.jwtManager))
+		{
+			profile.GET("", r.profileHandler.GetProfile)
+			profile.PUT("", r.profileHandler.UpdateProfile)
+			profile.PATCH("/2fa", r.profileHandler.Toggle2FA)
+			profile.PATCH("/photo", r.profileHandler.UpdatePhoto)
+			profile.PATCH("/change-password", r.profileHandler.ChangePassword)
+			profile.POST("/notification-secret/regenerate", r.profileHandler.RegenerateNotificationSecret)
+			profile.PATCH("/notification-secret/regenerate", r.profileHandler.RegenerateNotificationSecret)
 		}
 
 		// User routes (protected)
